@@ -20,12 +20,18 @@ class RandomChar extends Component {
     });
   };
 
+  onCharLoading = () => {
+    this.setState({
+      loading: true,
+    });
+  };
+
   marvelService = new MarvelService();
 
   // setting hook of mounting char comp
   componentDidMount() {
     this.updateChar();
-    this.timerId = setInterval(this.updateChar, 3000);
+    // this.timerId = setInterval(this.updateChar, 3000);
     console.log('mount');
   }
 
@@ -44,7 +50,9 @@ class RandomChar extends Component {
 
   // updating random character
   updateChar = () => {
+    console.log('update');
     const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
+    this.onCharLoading();
     this.marvelService
       .getCharacter(id)
       .then(this.onCharLoaded)
@@ -53,7 +61,7 @@ class RandomChar extends Component {
 
   render() {
     console.log('render');
-    // taking char and loading from state
+    // taking char, loading, error from state
     const { char, loading, error } = this.state;
     const errorMessage = error ? <ErrorMessage /> : null;
     const spinner = loading ? <Spinner /> : null;
@@ -72,7 +80,8 @@ class RandomChar extends Component {
             Do you want to get to know him better?
           </p>
           <p className="randomchar__title">Or choose another one</p>
-          <button className="button button__main">
+          {/* edited onClick */}
+          <button className="button button__main" onClick={this.updateChar}> 
             <div className="inner">try it</div>
           </button>
           <img src={mjolnir} alt="mjolnir" className="randomchar__decoration" />
