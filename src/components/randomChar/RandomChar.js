@@ -6,11 +6,6 @@ import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
 class RandomChar extends Component {
-  constructor(props) {
-    super(props);
-    this.updateChar();
-  }
-
   state = {
     char: {},
     loading: true,
@@ -22,13 +17,28 @@ class RandomChar extends Component {
     this.setState({
       loading: false,
       error: true,
-    })
+    });
   };
 
   marvelService = new MarvelService();
 
+  // setting hook of mounting char comp
+  componentDidMount() {
+    this.updateChar();
+    this.timerId = setInterval(this.updateChar, 3000);
+    console.log('mount');
+  }
+
+  // setting hook of Unmounting char comp
+  // by clearing intercal
+  componentWillUnmount() {
+    clearInterval(this.timerId);
+    console.log('unmount');
+  }
+
   // setting state of character and setting loading - false
   onCharLoaded = (char) => {
+    console.log('update');
     this.setState({ char, loading: false });
   };
 
@@ -42,11 +52,13 @@ class RandomChar extends Component {
   };
 
   render() {
+    console.log('render');
     // taking char and loading from state
     const { char, loading, error } = this.state;
-    const errorMessage = error ? <ErrorMessage/> : null;
-    const spinner= loading ? <Spinner/> : null;
-    const content= !(error || loading) ? <View char={char}/> : null;
+    const errorMessage = error ? <ErrorMessage /> : null;
+    const spinner = loading ? <Spinner /> : null;
+    // if not error or loading, show View comp, else - null
+    const content = !(error || loading) ? <View char={char} /> : null;
 
     return (
       <div className="randomchar">
