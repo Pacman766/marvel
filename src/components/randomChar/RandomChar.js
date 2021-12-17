@@ -12,6 +12,19 @@ class RandomChar extends Component {
     error: false,
   };
 
+  marvelService = new MarvelService();
+
+  onCharLoading = () => {
+    this.setState({
+      loading: true,
+    });
+  };
+
+  // setting state of character and setting loading - false
+  onCharLoaded = (char) => {
+    this.setState({ char, loading: false });
+  };
+
   // if no character with such id show error
   onError = () => {
     this.setState({
@@ -20,37 +33,20 @@ class RandomChar extends Component {
     });
   };
 
-  onCharLoading = () => {
-    this.setState({
-      loading: true,
-    });
-  };
-
-  marvelService = new MarvelService();
-
   // setting hook of mounting char comp
   componentDidMount() {
     this.updateChar();
     // this.timerId = setInterval(this.updateChar, 3000);
-    console.log('mount');
   }
 
   // setting hook of Unmounting char comp
   // by clearing intercal
   componentWillUnmount() {
     clearInterval(this.timerId);
-    console.log('unmount');
   }
-
-  // setting state of character and setting loading - false
-  onCharLoaded = (char) => {
-    console.log('update');
-    this.setState({ char, loading: false });
-  };
 
   // updating random character
   updateChar = () => {
-    console.log('update');
     const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
     this.onCharLoading();
     this.marvelService
@@ -60,7 +56,6 @@ class RandomChar extends Component {
   };
 
   render() {
-    console.log('render');
     // taking char, loading, error from state
     const { char, loading, error } = this.state;
     const errorMessage = error ? <ErrorMessage /> : null;
@@ -81,7 +76,7 @@ class RandomChar extends Component {
           </p>
           <p className="randomchar__title">Or choose another one</p>
           {/* edited onClick */}
-          <button className="button button__main" onClick={this.updateChar}> 
+          <button className="button button__main" onClick={this.updateChar}>
             <div className="inner">try it</div>
           </button>
           <img src={mjolnir} alt="mjolnir" className="randomchar__decoration" />
