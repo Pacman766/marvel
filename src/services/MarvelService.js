@@ -33,8 +33,9 @@ class MarvelService {
   // transforming data from server
   _transformCharacter = (char) => {
     return {
+      id: char.id,
       name: char.name,
-      // if char descr exists put 220 symbols, then '...' else put 
+      // if char descr exists put 220 symbols, then '...' else put
       // 'there is no description'
       description: char.description
         ? `${char.description.slice(0, 220)}...`
