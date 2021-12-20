@@ -1,9 +1,83 @@
+import { Component } from 'react';
+
+import Spinner from '../spinner/Spinner';
+import ErrorMessage from '../errorMessage/ErrorMessage';
+import Skeleton from '../skeleton/Skeleton';
+
 import './charInfo.scss';
 import thor from '../../resources/img/thor.jpeg';
+import MarvelService from '../../services/MarvelService';
 
-const CharInfo = () => {
+class CharInfo extends Component {
+  state = {
+    char: null,
+    loading: false,
+    error: false,
+  };
+
+  marvelService = new MarvelService();
+
+  componentDidMount() {
+    this.updateChar();
+  }
+
+  updateChar = () => {
+    const { charId } = this.props;
+    // if no charId, just stop
+    if (!charId) {
+      return;
+    }
+
+    // spinner
+    this.onCharLoading();
+    //
+    this.marvelService
+      .getCharacter(charId)
+      .then(this.onCharLoaded)
+      .catch(this.onError);
+  };
+
+  onCharLoading = () => {
+    this.setState({
+      loading: true,
+    });
+  };
+
+  // setting state of character and setting loading - false
+  onCharLoaded = (char) => {
+    this.setState({ char, loading: false });
+  };
+
+  // if no character with such id show error
+  onError = () => {
+    this.setState({
+      loading: false,
+      error: true,
+    });
+  };
+
+  render() {
+    const { char, loading, error } = this.state;
+
+    const skeleton = char || loading || error ? null : <Skeleton />;
+    const errorMessage = error ? <ErrorMessage /> : null;
+    const spinner = loading ? <Spinner /> : null;
+    // if not error or loading, show View comp, else - null
+    const content = !(error || loading || !char) ? <View char={char} /> : null;
+    return (
+      <div className="char__info">
+        {skeleton}
+        {errorMessage}
+        {spinner}
+        {content}
+      </div>
+    );
+  }
+}
+
+const View = ({ char }) => {
   return (
-    <div className="char__info">
+    <>
       <div className="char__basics">
         <img src={thor} alt="abyss" />
         <div>
@@ -48,7 +122,7 @@ const CharInfo = () => {
         <li className="char__comics-item">Avengers (1963) #1</li>
         <li className="char__comics-item">Avengers (1996) #1</li>
       </ul>
-    </div>
+    </>
   );
 };
 
