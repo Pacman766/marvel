@@ -28,8 +28,6 @@ class CharInfo extends Component {
     }
   }
 
-  componentDidCatch(arr, info) {}
-
   updateChar = () => {
     const { charId } = this.props;
     // if no charId, just stop
