@@ -10,6 +10,8 @@ class CharList extends Component {
     charList: [],
     loading: true,
     error: false,
+    newItemLoading: false,
+    offset: 210,
   };
 
   marvelService = new MarvelService();
@@ -17,7 +19,7 @@ class CharList extends Component {
   componentDidMount() {
     this.onRequest();
   }
-
+  // making request, getting all chars from marvelService and getting new charList  with offset, if the buttons clicked
   onRequest = (offset) => {
     this.marvelService
       .getAllCharacters(offset)
@@ -25,13 +27,24 @@ class CharList extends Component {
       .catch(this.onError);
   };
 
-  onCharListLoaded = (charList) => {
+  // getting new chars list
+  onChartrListLoading = () => {
     this.setState({
-      charList,
-      loading: false,
+      newItemLoading: true,
     });
   };
 
+  // getting +9 new chars
+  onCharListLoaded = (newCharList) => {
+    this.setState(({ offset, charList }) => ({
+      charList: [...charList, ...newCharList],
+      loading: false,
+      newItemLoading: false,
+      offset: offset + 9,
+    }));
+  };
+
+  // setting error and removing  loading
   onError = () => {
     this.setState({
       error: true,
@@ -64,7 +77,7 @@ class CharList extends Component {
   }
 
   render() {
-    const { charList, loading, error } = this.state;
+    const { charList, loading, error, newItemLoading, offset } = this.state;
     const items = this.renderItems(charList);
 
     const errorMessage = error ? <ErrorMessage /> : null;
@@ -77,7 +90,11 @@ class CharList extends Component {
         {errorMessage}
         {spinner}
         {content}
-        <button className="button button__main button__long">
+        <button
+          className="button button__main button__long"
+          disabled={newItemLoading}
+          onClick={() => this.onRequest(offset)}
+        >
           <div className="inner">load more</div>
         </button>
       </div>
