@@ -129,8 +129,9 @@ const View = ({ char }) => {
   );
 };
 
-CharInfo.protoTypes = {
-  charId: PropTypes.string,
+// validation of charId
+CharInfo.propTypes = {
+  charId: PropTypes.number,
 };
 
 export default CharInfo;
