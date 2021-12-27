@@ -69,6 +69,7 @@ class CharList extends Component {
     this.itemRefs.push(ref);
   };
 
+  // remove selection from all chars, add selection by id for selected char
   focusOnItem = (id) => {
     this.itemRefs.forEach((item) =>
       item.classList.remove('char__item_selected')
@@ -93,11 +94,12 @@ class CharList extends Component {
           tabIndex={0}
           ref={this.setRef}
           key={item.id}
+          // selection of char by clicking of key press
           onClick={() => {
             this.props.onCharSelected(item.id);
             this.focusOnItem(i);
           }}
-          // 
+          //
           onKeyPress={(e) => {
             if (e.key === ' ' || e.key === 'Enter') {
               this.props.onCharSelected(item.id);
