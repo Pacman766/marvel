@@ -64,6 +64,7 @@ class CharList extends Component {
   // empty arr for refs
   itemRefs = [];
 
+  // setting ref for selected char
   setRef = (ref) => {
     this.itemRefs.push(ref);
   };
@@ -96,6 +97,7 @@ class CharList extends Component {
             this.props.onCharSelected(item.id);
             this.focusOnItem(i);
           }}
+          // 
           onKeyPress={(e) => {
             if (e.key === ' ' || e.key === 'Enter') {
               this.props.onCharSelected(item.id);
