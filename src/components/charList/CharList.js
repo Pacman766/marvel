@@ -9,13 +9,11 @@ import './charList.scss';
 
 const CharList = (props) => {
   const [charList, setCharlist] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
   const [newItemLoading, setNewItemLoading] = useState(false);
   const [offset, setOffset] = useState(1541); // 210
   const [charEnded, setCharEnded] = useState(false);
 
-  const marvelService = useMarvelService();
+  const { loading, error, getAllCharacters } = useMarvelService();
 
   useEffect(() => {
     onRequest();
@@ -23,16 +21,8 @@ const CharList = (props) => {
 
   // making request, getting all chars from marvelService and getting new charList  with offset, if the buttons clicked
   const onRequest = (offset) => {
-    onChartrListLoading();
-    marvelService
-      .getAllCharacters(offset)
-      .then(onCharListLoaded)
-      .catch(onError);
-  };
-
-  // getting new chars list
-  const onChartrListLoading = () => {
     setNewItemLoading(true);
+    getAllCharacters(offset).then(onCharListLoaded);
   };
 
   // checking if list of chars ended or getting +9 new chars
@@ -43,16 +33,9 @@ const CharList = (props) => {
     }
 
     setCharlist((charList) => [...charList, ...newCharList]);
-    setLoading((loading) => false);
     setNewItemLoading((newItemLoading) => false);
     setOffset((offset) => offset + 9);
     setCharEnded((charEnded) => ended);
-  };
-
-  // setting error and removing  loading
-  const onError = () => {
-    setError(true);
-    setLoading(false);
   };
 
   // empty arr for refs
