@@ -6,14 +6,12 @@ import ErrorMessage from '../errorMessage/ErrorMessage';
 import Skeleton from '../skeleton/Skeleton';
 
 import './charInfo.scss';
-import MarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 
 const CharInfo = (props) => {
   const [char, setChar] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
 
-  const marvelService = new MarvelService();
+  const { loading, error, getCharacter, clearError } = useMarvelService();
 
   // hook
 
@@ -21,39 +19,19 @@ const CharInfo = (props) => {
     updateChar();
   }, [props.charId]);
 
-  // hook
-  // componentDidUpdate(prevProps) {
-  //   if (this.props.charId !== prevProps.charId) {
-  //     this.updateChar();
-  //   }
-  // }
-
   const updateChar = () => {
     const { charId } = props;
     // if no charId, just stop
     if (!charId) {
       return;
     }
-    // spinner
-    onCharLoading();
-    //
-    marvelService.getCharacter(charId).then(onCharLoaded).catch(onError);
-  };
-
-  const onCharLoading = () => {
-    setLoading(true);
+    clearError();
+    getCharacter(charId).then(onCharLoaded);
   };
 
   // setting state of character and setting loading - false
   const onCharLoaded = (char) => {
-    setLoading(false);
     setChar(char);
-  };
-
-  // if no character with such id show error
-  const onError = () => {
-    setLoading(false);
-    setError(true);
   };
 
   const skeleton = char || loading || error ? null : <Skeleton />;
