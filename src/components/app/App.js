@@ -23,14 +23,14 @@ const App = () => {
           <RandomChar />
         </ErrorBoundary>
         {/* <button onClick={this.toggleRandomChar}>CLICK ME</button> */}
-        <div className="char__content">
+        {/* <div className="char__content">
           <ErrorBoundary>
             <CharList onCharSelected={onCharSelected} />
           </ErrorBoundary>
           <ErrorBoundary>
             <CharInfo charId={selectedChar} />
           </ErrorBoundary>
-        </div>
+        </div> */}
         <img className="bg-decoration" src={decoration} alt="vision" />
       </main>
     </div>
