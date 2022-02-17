@@ -40,8 +40,8 @@ const ComicsList = () => {
         <li className="comics-item" key={i}>
           <a href="#">
             <img
-              src="{item.thumbnail}"
-              alt="item.title"
+              src={item.thumbnail}
+              alt={item.title}
               className="comics__item-img"
             />
             <div className="comics__item-name">{item.title}</div>
@@ -65,8 +65,8 @@ const ComicsList = () => {
       {spinner}
       {items}
       <button
-        className="button button__main button__long"
         disabled={newItemLoading}
+        className="button button__main button__long"
         style={{ display: comicsEnded ? 'none' : 'block' }}
         onClick={() => onRequest(offset)}
       >
