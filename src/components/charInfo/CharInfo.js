@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Skeleton from '../skeleton/Skeleton';
 
 import './charInfo.scss';
-import useMarvelService from '../../services/MarvelService';
 
 const CharInfo = (props) => {
   const [char, setChar] = useState(null);
@@ -39,6 +39,7 @@ const CharInfo = (props) => {
   const spinner = loading ? <Spinner /> : null;
   // if not error or loading, show View comp, else - null
   const content = !(error || loading || !char) ? <View char={char} /> : null;
+
   return (
     <div className="char__info">
       {skeleton}
